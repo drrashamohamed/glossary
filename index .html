@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>قاموس د. رشا للمصطلحات الإسلامية | Dr. Rasha's Islamic English Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Literata:opsz,wght@7..72,500;7..72,700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm, scholarly, a teacher's reference you return to daily.
+   IDEA: an Iznik-tiled study card box — each word a card you pick up and hear.
+   PICTURE: a geometric eight-point-star tile band; below it the working glossary itself.
+   COLOUR and TYPE: white ground, Iznik blue lead, turquoise support, coral for the stressed syllable; Amiri title, Plex Arabic body, Literata for English words.
+   LAYOUT: modest title over the tile band, sticky toolbar, responsive card grid. */
+:root{color-scheme:light dark;
+--bg:light-dark(#fbfcfe,#0d1628);--ink:light-dark(#14213d,#e7edf7);--mut:light-dark(#5a6683,#9fb0cc);
+--card:light-dark(#ffffff,#15223a);--line:light-dark(#dfe6f1,#26355a);
+--blue:light-dark(#1f4e9c,#86aef2);--tq:light-dark(#137d7a,#4fd1c5);--coral:light-dark(#c13d2a,#ff8b77);
+--soft:light-dark(#eef3fb,#1b2b49)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "IBM Plex Sans Arabic",system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(22px,3.5vw,48px) max(5vw,16px)}
+header.band{padding-bottom:18px}
+h1{font:700 clamp(30px,4.6vw,46px)/1.15 Amiri,serif;margin:0;color:var(--blue);text-wrap:balance}
+.en-title{margin:4px 0 0;font:600 clamp(18px,2.4vw,24px)/1.3 Literata,Georgia,serif;color:var(--tq);text-align:right}
+.sub{margin:6px 0 0;color:var(--mut);font-size:16px}
+.by{margin:4px 0 0;font-size:14px;color:var(--tq);font-weight:600}
+.tiles{display:block;width:100%;height:76px;color:var(--blue)}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px max(5vw,16px);display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+input,select,textarea,button{font:inherit;font-size:16px;color:inherit}
+.bar input[type=search]{flex:1 1 220px;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.bar select{min-height:44px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.chk{display:flex;align-items:center;gap:6px;font-size:15px;color:var(--mut);min-height:44px}
+.chk input{width:18px;height:18px;accent-color:var(--tq)}
+.btn{min-height:44px;padding:8px 16px;border-radius:10px;border:1px solid var(--blue);background:var(--blue);color:var(--bg);font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--blue)}
+:focus-visible{outline:3px solid var(--tq);outline-offset:2px}
+.prog{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--mut);flex:1 1 100%}
+.meter{flex:1;max-width:320px;height:8px;border-radius:8px;background:var(--soft);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--tq);transition:width .4s}
+.status{margin:0 max(5vw,16px);padding:10px 14px;border-radius:10px;background:var(--soft);color:var(--mut);font-size:15px}
+.status:empty{display:none}
+#list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:18px;padding:22px max(5vw,16px) 56px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 1px 0 var(--line)}
+.card.done{border-color:var(--tq)}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.en{font:700 30px/1.1 Literata,Georgia,serif;color:var(--ink);overflow-wrap:anywhere}
+.tag{font-size:13px;color:var(--tq);background:var(--soft);border-radius:20px;padding:2px 10px;white-space:nowrap}
+.syl{font:500 20px/1.3 Literata,Georgia,serif;color:var(--mut);text-align:left}
+.syl .st{color:var(--coral);font-weight:700}
+.syl i{font-style:normal;opacity:.5;margin:0 3px}
+.ipa{font-family:"Charis SIL","Doulos SIL","Segoe UI",system-ui,sans-serif;font-size:17px;color:var(--blue);text-align:left}
+.say{display:flex;flex-wrap:wrap;gap:8px}
+.say button,.mini{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:6px 14px;border-radius:22px;border:1px solid var(--line);background:var(--soft);color:var(--blue);cursor:pointer;font-weight:600;font-size:15px}
+.say button svg,.mini svg{width:18px;height:18px}
+.say button.playing{background:var(--blue);color:var(--bg)}
+.ar{margin:2px 0 0;font-size:18px;font-weight:600}
+.exw{display:flex;gap:8px;align-items:flex-start;direction:ltr}
+.ex{margin:0;font:500 16px/1.55 Literata,Georgia,serif;color:var(--ink);text-align:left;flex:1}
+.exw .mini{min-height:36px;padding:4px 10px}
+.note{margin:0;font-size:14.5px;color:var(--mut);border-inline-start:3px solid var(--coral);padding-inline-start:10px}
+.card footer{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:auto;padding-top:10px;border-top:1px solid var(--line);font-size:14px}
+.card footer a{color:var(--blue);min-height:36px;display:inline-flex;align-items:center}
+.learn{margin-inline-start:auto}
+.tool{background:none;border:0;color:var(--mut);cursor:pointer;min-height:36px;padding:0 4px;font-size:14px}
+.tool.danger{color:var(--coral)}
+.empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:40px 10px}
+.ov{position:fixed;inset:0;background:rgb(10 18 35/.55);display:none;align-items:flex-start;justify-content:center;padding:4vh 12px;z-index:20;overflow:auto}
+.ov.on{display:flex}
+form.panel{background:var(--card);border-radius:16px;padding:22px;width:min(560px,100%);display:grid;gap:12px}
+.panel h2{margin:0;font:700 26px/1.2 Amiri,serif;color:var(--blue)}
+.panel label{display:grid;gap:4px;font-size:14px;color:var(--mut)}
+.panel input,.panel textarea{min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.panel .ltr{direction:ltr;text-align:left}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.acts{display:flex;gap:10px;justify-content:flex-start}
+.hint{font-size:13px;color:var(--mut);margin:0}
+@media(max-width:600px){.row2{grid-template-columns:minmax(0,1fr)}.en{font-size:26px}}
+@media(prefers-reduced-motion:reduce){.meter i{transition:none}}
+</style>
+</head>
+<body>
+<header class="band">
+  <h1>قاموس د. رشا للمصطلحات الإسلامية</h1>
+  <p class="en-title" dir="ltr">Dr. Rasha's Islamic English Glossary</p>
+  <p class="sub">النطق الصحيح، ومكان الضغط، والمعنى، وجملة مثال لكل مصطلح.</p>
+  <p class="by">إعداد وتقديم: د. رشا محمد</p>
+</header>
+<svg class="tiles" aria-hidden="true" preserveAspectRatio="xMidYMid slice" viewBox="0 0 600 76">
+  <defs>
+    <pattern id="t" width="76" height="76" patternUnits="userSpaceOnUse">
+      <rect width="76" height="76" fill="var(--soft)"/>
+      <g transform="translate(38 38)">
+        <rect x="-20" y="-20" width="40" height="40" fill="currentColor"/>
+        <rect x="-20" y="-20" width="40" height="40" fill="currentColor" transform="rotate(45)"/>
+        <rect x="-12" y="-12" width="24" height="24" fill="var(--tq)" transform="rotate(22.5)"/>
+        <circle r="5" fill="var(--bg)"/>
+      </g>
+      <circle cx="0" cy="0" r="7" fill="var(--coral)"/><circle cx="76" cy="0" r="7" fill="var(--coral)"/>
+      <circle cx="0" cy="76" r="7" fill="var(--coral)"/><circle cx="76" cy="76" r="7" fill="var(--coral)"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="76" fill="url(#t)"/>
+</svg>
+<div class="bar">
+  <input type="search" id="q" placeholder="ابحثي بالإنجليزي أو بالعربي…" aria-label="بحث">
+  <select id="topic" aria-label="الموضوع"><option value="">كل المواضيع</option></select>
+  <label class="chk"><input type="checkbox" id="hide"> إخفاء اللي حفظته</label>
+    <div class="prog" id="prog" hidden><span id="progTxt"></span><div class="meter"><i id="progBar" style="width:0"></i></div></div>
+</div>
+<p class="status" id="status"></p>
+<main id="list"></main>
+
+
+<footer class="band" style="padding-top:0;color:var(--mut);font-size:14px">© إعداد وتقديم: د. رشا محمد</footer>
+<script>
+/* ===== الإعداد ===== */
+const SHEET_ID  = "1obG8hAyY0IvQKxMnXM_I6xORDce6tujZNoGcmo0HTqU";
+const SHEET_GID = "0";
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS9Aif1mfT9pD56FF2xBv0ltBLVhQcDbnThFnTAG2YiKL7BdgF3DtBEzLSAb-EqPMKRus-2F2YDEDqM/pub?gid=0&single=true&output=csv";
+/* ==================== */
+{
+const WORDS_BUILTIN = [{"en": "Creator", "ar": "الخالق", "syll": "cre-A-tor", "ipa": "/kriˈeɪtər/", "ex": "Allah is the Creator of the heavens and the earth.", "note": "ابدئي بـ kri، والضغط على المقطع التاني.", "topic": "العقيدة", "week": 1}, {"en": "Almighty", "ar": "القدير، العظيم القدرة", "syll": "al-MIGH-ty", "ipa": "/ɔːlˈmaɪti/", "ex": "We believe in Allah, the Almighty.", "note": "al هنا بتتنطق زي all، والـ gh ساكتة.", "topic": "العقيدة", "week": 1}, {"en": "Merciful", "ar": "الرحيم", "syll": "MER-ci-ful", "ipa": "/ˈmɜːrsɪfəl/", "ex": "Allah is the Most Merciful.", "note": "آخر مقطع ful خفيف جدًا.", "topic": "العقيدة", "week": 1}, {"en": "monotheism", "ar": "التوحيد", "syll": "MON-o-the-ism", "ipa": "/ˈmɑːnoʊθiːɪzəm/", "ex": "Islam is built on pure monotheism.", "note": "الضغط على أول مقطع، والـ th بطرف اللسان.", "topic": "العقيدة", "week": 1}, {"en": "polytheism", "ar": "الشرك", "syll": "POL-y-the-ism", "ipa": "/ˈpɑːliθiːɪzəm/", "ex": "The Quran warns against polytheism.", "note": "بالـ p مش b، والضغط على أول مقطع.", "topic": "العقيدة", "week": 1}, {"en": "worship", "ar": "العبادة", "syll": "WOR-ship", "ipa": "/ˈwɜːrʃɪp/", "ex": "Worship belongs to Allah alone.", "note": "الصوت الأول زي اللي في bird. لو اتنطقت warship بتبقى «سفينة حربية».", "topic": "العقيدة", "week": 1}, {"en": "faith", "ar": "الإيمان", "syll": "FAITH", "ipa": "/feɪθ/", "ex": "Faith includes belief in the heart, words of the tongue, and deeds of the body.", "note": "آخرها th مش سين، وإلا هتتسمع face.", "topic": "العقيدة", "week": 1}, {"en": "believer", "ar": "المؤمن", "syll": "be-LIE-ver", "ipa": "/bɪˈliːvər/", "ex": "A believer trusts Allah in every situation.", "note": "الـ v بالسنان على الشفة التحتانية، مش f.", "topic": "العقيدة", "week": 1}, {"en": "prophet", "ar": "النبي", "syll": "PROPH-et", "ipa": "/ˈprɑːfɪt/", "ex": "Muhammad ﷺ is the final Prophet.", "note": "بالـ p. ونطقها زي profit بالظبط، والسياق هو اللي بيفرّق.", "topic": "العقيدة", "week": 1}, {"en": "revelation", "ar": "الوحي", "syll": "rev-e-LA-tion", "ipa": "/ˌrevəˈleɪʃən/", "ex": "The Quran was sent down to the Prophet ﷺ through revelation.", "note": "الـ v مش f، والضغط على LA.", "topic": "العقيدة", "week": 1}, {"en": "attribute", "ar": "صفة (من صفات الله)", "syll": "AT-tri-bute", "ipa": "/ˈætrɪbjuːt/", "ex": "Mercy is one of Allah's attributes.", "note": "لو اسم الضغط على AT. لو فعل (at-TRIB-ute) معناه «ينسب».", "topic": "العقيدة", "week": 1}, {"en": "sovereignty", "ar": "السيادة، المُلك", "syll": "SOV-er-eign-ty", "ipa": "/ˈsɑːvrənti/", "ex": "All sovereignty belongs to Allah.", "note": "الـ g ساكتة، وبتتنطق تقريبًا SOV-ren-ty.", "topic": "العقيدة", "week": 1}, {"en": "Hereafter", "ar": "الآخرة", "syll": "here-AF-ter", "ipa": "/hɪrˈæftər/", "ex": "This life is a test, and the Hereafter is forever.", "note": "الضغط على AF.", "topic": "العقيدة", "week": 1}, {"en": "resurrection", "ar": "البعث", "syll": "res-ur-REC-tion", "ipa": "/ˌrezəˈrekʃən/", "ex": "Muslims believe in the resurrection after death.", "note": "الـ s الأولى بتتنطق z.", "topic": "العقيدة", "week": 1}, {"en": "Judgment", "ar": "الحساب، يوم الدين (Day of Judgment)", "syll": "JUDG-ment", "ipa": "/ˈdʒʌdʒmənt/", "ex": "Every soul will be held accountable on the Day of Judgment.", "note": "dg بتتنطق «ج».", "topic": "العقيدة", "week": 1}, {"en": "prayer", "ar": "الصلاة", "syll": "PRAYER", "ipa": "/prer/", "ex": "Prayer is the second pillar of Islam.", "note": "بالـ p، وفي الأمريكي بتتنطق مقطع واحد تقريبًا «پرير».", "topic": "الفقه والعبادات", "week": 2}, {"en": "prostration", "ar": "السجود", "syll": "pros-TRA-tion", "ipa": "/prɑːˈstreɪʃən/", "ex": "A servant is closest to his Lord in prostration.", "note": "بالـ p، والضغط على TRA.", "topic": "الفقه والعبادات", "week": 2}, {"en": "ablution", "ar": "الوضوء", "syll": "ab-LU-tion", "ipa": "/əˈbluːʃən/", "ex": "Ablution is required before prayer.", "note": "أولها صوت خفيف «أ»، والضغط على LU.", "topic": "الفقه والعبادات", "week": 2}, {"en": "fasting", "ar": "الصيام", "syll": "FAST-ing", "ipa": "/ˈfæstɪŋ/", "ex": "Fasting in Ramadan is obligatory for every adult Muslim who is able.", "note": "الـ a زي اللي في cat، مش «فاستنج» بألف طويلة.", "topic": "الفقه والعبادات", "week": 2}, {"en": "charity", "ar": "الصدقة", "syll": "CHAR-i-ty", "ipa": "/ˈtʃerəti/", "ex": "Charity does not decrease wealth.", "note": "ch = «تش»، والـ t في الأمريكي بتقرب من «د» خفيفة.", "topic": "الفقه والعبادات", "week": 2}, {"en": "almsgiving", "ar": "الزكاة", "syll": "ALMS-giv-ing", "ipa": "/ˈɑːmzˌɡɪvɪŋ/", "ex": "Almsgiving (zakah) purifies a person's wealth.", "note": "الـ l في alms ساكتة: «آمز».", "topic": "الفقه والعبادات", "week": 2}, {"en": "pilgrimage", "ar": "الحج", "syll": "PIL-grim-age", "ipa": "/ˈpɪlɡrɪmɪdʒ/", "ex": "Pilgrimage to Makkah is required once in a lifetime for those who are able.", "note": "بالـ p، وآخرها «مِدج» مش «مِيدج».", "topic": "الفقه والعبادات", "week": 2}, {"en": "obligatory", "ar": "فرض / واجب", "syll": "ob-LIG-a-to-ry", "ipa": "/əˈblɪɡətɔːri/", "ex": "The five daily prayers are obligatory.", "note": "الضغط على LIG.", "topic": "الفقه والعبادات", "week": 2}, {"en": "recommended", "ar": "مستحب / مندوب", "syll": "rec-om-MEND-ed", "ipa": "/ˌrekəˈmendɪd/", "ex": "Fasting on Mondays and Thursdays is recommended.", "note": "الضغط على MEND.", "topic": "الفقه والعبادات", "week": 2}, {"en": "permissible", "ar": "مباح / حلال", "syll": "per-MIS-si-ble", "ipa": "/pərˈmɪsəbəl/", "ex": "Trade is permissible in Islam.", "note": "بالـ p، والضغط على MIS.", "topic": "الفقه والعبادات", "week": 2}, {"en": "forbidden", "ar": "محرّم / حرام", "syll": "for-BID-den", "ipa": "/fərˈbɪdən/", "ex": "Alcohol is forbidden in Islam.", "note": "الضغط على BID.", "topic": "الفقه والعبادات", "week": 2}, {"en": "disliked", "ar": "مكروه", "syll": "dis-LIKED", "ipa": "/dɪsˈlaɪkt/", "ex": "Some actions are disliked but not forbidden.", "note": "الـ ed في الآخر بتتنطق t: «ديس-لايكت».", "topic": "الفقه والعبادات", "week": 2}, {"en": "purification", "ar": "الطهارة", "syll": "pu-ri-fi-CA-tion", "ipa": "/ˌpjʊrəfɪˈkeɪʃən/", "ex": "Purification is half of faith.", "note": "بالـ p، والضغط على CA.", "topic": "الفقه والعبادات", "week": 2}, {"en": "congregation", "ar": "الجماعة (في الصلاة)", "syll": "con-gre-GA-tion", "ipa": "/ˌkɑːŋɡrɪˈɡeɪʃən/", "ex": "Praying in congregation brings a greater reward.", "note": "الضغط على GA.", "topic": "الفقه والعبادات", "week": 2}, {"en": "jurisprudence", "ar": "الفقه", "syll": "ju-ris-PRU-dence", "ipa": "/ˌdʒʊrɪsˈpruːdəns/", "ex": "Islamic jurisprudence explains how to apply the Shariah in daily life.", "note": "أولها «ج»، وبالـ p، والضغط على PRU.", "topic": "الفقه والعبادات", "week": 2}, {"en": "biography", "ar": "السيرة", "syll": "bi-OG-ra-phy", "ipa": "/baɪˈɑːɡrəfi/", "ex": "The biography of the Prophet ﷺ is full of lessons.", "note": "الضغط على OG.", "topic": "السيرة النبوية", "week": 3}, {"en": "migration", "ar": "الهجرة", "syll": "mi-GRA-tion", "ipa": "/maɪˈɡreɪʃən/", "ex": "The migration to Madinah marks the start of the Islamic calendar.", "note": "أولها «ماي»، والضغط على GRA.", "topic": "السيرة النبوية", "week": 3}, {"en": "companion", "ar": "الصحابي", "syll": "com-PAN-ion", "ipa": "/kəmˈpænjən/", "ex": "Abu Bakr was the closest companion of the Prophet ﷺ.", "note": "بالـ p، والضغط على PAN.", "topic": "السيرة النبوية", "week": 3}, {"en": "persecution", "ar": "الاضطهاد / الإيذاء", "syll": "per-se-CU-tion", "ipa": "/ˌpɜːrsɪˈkjuːʃən/", "ex": "The early Muslims in Makkah faced severe persecution.", "note": "بالـ p، والضغط على CU.", "topic": "السيرة النبوية", "week": 3}, {"en": "battle", "ar": "غزوة / معركة", "syll": "BAT-tle", "ipa": "/ˈbætl/", "ex": "The Battle of Badr took place in the second year after the migration.", "note": "في الأمريكي الـ tt بتبقى زي «د» خفيفة: «بادل».", "topic": "السيرة النبوية", "week": 3}, {"en": "treaty", "ar": "صلح / معاهدة", "syll": "TREA-ty", "ipa": "/ˈtriːti/", "ex": "The Treaty of Hudaybiyyah opened the way for peace and da'wah.", "note": "الضغط على أول مقطع.", "topic": "السيرة النبوية", "week": 3}, {"en": "conquest", "ar": "الفتح", "syll": "CON-quest", "ipa": "/ˈkɑːŋkwest/", "ex": "After the conquest of Makkah, the Prophet ﷺ forgave his enemies.", "note": "الضغط على CON.", "topic": "السيرة النبوية", "week": 3}, {"en": "orphan", "ar": "يتيم", "syll": "OR-phan", "ipa": "/ˈɔːrfən/", "ex": "The Prophet ﷺ was born an orphan.", "note": "ph = f.", "topic": "السيرة النبوية", "week": 3}, {"en": "trustworthy", "ar": "الأمين", "syll": "TRUST-wor-thy", "ipa": "/ˈtrʌstwɜːrði/", "ex": "Even before prophethood, he was known as the trustworthy one.", "note": "th هنا زي «ذ» مش «ث» ولا «ز».", "topic": "السيرة النبوية", "week": 3}, {"en": "messenger", "ar": "الرسول", "syll": "MES-sen-ger", "ipa": "/ˈmesɪndʒər/", "ex": "Muhammad ﷺ is the Messenger of Allah.", "note": "g هنا = «ج»، والضغط على MES.", "topic": "السيرة النبوية", "week": 3}, {"en": "prophethood", "ar": "النبوة", "syll": "PROPH-et-hood", "ipa": "/ˈprɑːfɪthʊd/", "ex": "He received prophethood at the age of forty.", "note": "t و h منفصلين (prophet + hood)، مش th.", "topic": "السيرة النبوية", "week": 3}, {"en": "tribe", "ar": "قبيلة", "syll": "TRIBE", "ipa": "/traɪb/", "ex": "Quraysh was the most powerful tribe in Makkah.", "note": "مقطع واحد، والـ e ساكتة.", "topic": "السيرة النبوية", "week": 3}, {"en": "emigrants", "ar": "المهاجرون", "syll": "EM-i-grants", "ipa": "/ˈemɪɡrənts/", "ex": "The Helpers welcomed the emigrants in Madinah.", "note": "متتلخبطيش بينها وبين immigrants. والأنصار = the Helpers.", "topic": "السيرة النبوية", "week": 3}, {"en": "Night Journey", "ar": "الإسراء", "syll": "night-JOUR-ney", "ipa": "/naɪt ˈdʒɜːrni/", "ex": "The Night Journey took the Prophet ﷺ from Makkah to Jerusalem.", "note": "المقطع الأول في journey زي اللي في bird.", "topic": "السيرة النبوية", "week": 3}, {"en": "Ascension", "ar": "المعراج", "syll": "as-CEN-sion", "ipa": "/əˈsenʃən/", "ex": "The Ascension took him through the heavens.", "note": "الـ sc بتتنطق s، والضغط على CEN.", "topic": "السيرة النبوية", "week": 3}];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+const KEY='islamic-glossary-learned';
+let learned={};try{learned=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const st={words:[],q:'',topic:'',hide:false};
+const idOf=w=>String(w.en||'').trim().toLowerCase();
+const setWords=a=>{st.words=a.filter(w=>w.en&&w.ar).map((w,i)=>({...w,week:w.week?Number(w.week):null,ord:i}))};
+
+function syl(s){return esc(s).split('-').map(p=>`<span class="${/[A-Z]/.test(p)&&p===p.toUpperCase()?'st':''}">${p}</span>`).join('<i>·</i>')}
+const slug=w=>encodeURIComponent(String(w).trim().toLowerCase().replace(/\s+/g,'-'));
+function card(w,i){
+  const id=idOf(w),done=!!learned[id];
+  return `<article class="card${done?' done':''}">
+  <div class="top"><div class="en" dir="ltr">${esc(w.en)}</div>${w.topic||w.week?`<span class="tag">${esc(w.topic||'')}${w.week?` · أسبوع ${esc(w.week)}`:''}</span>`:''}</div>
+  ${w.syll?`<div class="syl" dir="ltr">${syl(w.syll)}</div>`:''}
+  ${w.ipa?`<div class="ipa" dir="ltr">${esc(w.ipa)}</div>`:''}
+  <div class="say"><button type="button" data-act="say" data-i="${i}">${SPK} استمعي</button><button type="button" data-act="slow" data-i="${i}">${SPK} ببطء</button></div>
+  <p class="ar">${esc(w.ar)}</p>
+  ${w.ex?`<div class="exw"><p class="ex">${esc(w.ex)}</p><button class="mini" type="button" data-act="ex" data-i="${i}" aria-label="استمعي للجملة">${SPK}</button></div>`:''}
+  ${w.note?`<p class="note">${esc(w.note)}</p>`:''}
+  <footer>
+    <a href="https://dictionary.cambridge.org/us/dictionary/english/${slug(w.en)}" target="_blank" rel="noopener">Cambridge</a>
+    <a href="https://youglish.com/pronounce/${encodeURIComponent(w.en)}/english/us" target="_blank" rel="noopener">YouGlish</a>
+    <label class="chk learn"><input type="checkbox" data-act="learn" data-i="${i}"${done?' checked':''}> حفظتها</label>
+  </footer></article>`;
+}
+let shown=[];
+function render(){
+  const topics=[...new Set(st.words.map(w=>w.topic).filter(Boolean))];
+  const sel=$('#topic'),cur=sel.value;
+  sel.innerHTML='<option value="">كل المواضيع</option>'+topics.map(t=>`<option${t===cur?' selected':''}>${esc(t)}</option>`).join('');
+  const q=st.q.trim().toLowerCase();
+  shown=st.words.filter(w=>(!st.topic||w.topic===st.topic)&&(!st.hide||!learned[idOf(w)])&&(!q||[w.en,w.ar,w.topic,w.note].some(x=>String(x||'').toLowerCase().includes(q))))
+    .sort((a,b)=>(a.week||99)-(b.week||99)||a.ord-b.ord);
+  const total=st.words.length,n=st.words.filter(w=>learned[idOf(w)]).length;
+  $('#prog').hidden=!total;
+  $('#progTxt').textContent=`حفظتي ${n} من ${total}`;
+  $('#progBar').style.width=total?`${n/total*100}%`:'0';
+  $('#list').innerHTML=shown.length?shown.map(card).join(''):`<p class="empty">${total?'مفيش كلمات مطابقة للبحث.':'لسه مفيش كلمات.'}</p>`;
+}
+function usVoice(){
+  try{const vs=speechSynthesis.getVoices().filter(v=>/^en[-_]US/i.test(v.lang));
+    for(const p of [/google us english/i,/natural/i,/samantha/i,/aria|jenny|guy/i]){const v=vs.find(v=>p.test(v.name));if(v)return v}
+    return vs[0]||null}catch(e){return null}
+}
+function speak(text,rate,btn){
+  if(!text||!('speechSynthesis' in window)){$('#status').textContent='المتصفح ده مش بيدعم النطق. جرّبي Google Chrome.';return}
+  document.querySelectorAll('.playing').forEach(b=>b.classList.remove('playing'));
+  if(btn)btn.classList.add('playing');
+  const done=()=>btn&&btn.classList.remove('playing');
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);const v=usVoice();if(v)u.voice=v;u.lang=v?v.lang:'en-US';u.rate=rate;u.onend=done;u.onerror=done;speechSynthesis.speak(u)}catch(e){done()}
+}
+try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{}}catch(e){}
+
+$('#list').addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const w=shown[+b.dataset.i];if(!w)return;
+  const a=b.dataset.act;
+  if(a==='say')speak(w.en,1,b);
+  else if(a==='slow')speak(w.en,0.7,b);
+  else if(a==='ex')speak(w.ex,0.9,b);
+  else if(a==='learn'){const id=idOf(w);if(b.checked)learned[id]=true;else delete learned[id];try{localStorage.setItem(KEY,JSON.stringify(learned))}catch(e){}render()}
+});
+$('#q').addEventListener('input',e=>{st.q=e.target.value;render()});
+$('#topic').addEventListener('change',e=>{st.topic=e.target.value;render()});
+$('#hide').addEventListener('change',e=>{st.hide=e.target.checked;render()});
+
+function parseCSV(t){
+  const rows=[];let row=[],f='',q=false;
+  t=t.replace(/^﻿/,'');
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+    else if(c==='"')q=true;else if(c===','){row.push(f);f=''}
+    else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f=''}
+    else f+=c}
+  if(f||row.length){row.push(f);rows.push(row)}
+  const h=(rows.shift()||[]).map(x=>x.trim().toLowerCase());
+  return rows.filter(r=>r.some(x=>x.trim())).map(r=>Object.fromEntries(h.map((k,i)=>[k,(r[i]||'').trim()])));
+}
+setWords(WORDS_BUILTIN);render();
+function jsonp(){return new Promise((res,rej)=>{
+  const cb='__gs'+Date.now(),sc=document.createElement('script');
+  const tm=setTimeout(()=>{done();rej('timeout')},12000);
+  function done(){clearTimeout(tm);try{delete window[cb]}catch(e){window[cb]=undefined}sc.remove()}
+  window[cb]=d=>{done();try{
+    const cols=d.table.cols.map(c=>String(c.label||'').trim().toLowerCase());
+    res(d.table.rows.map(r=>Object.fromEntries(cols.map((k,i)=>{const c=r.c&&r.c[i];return [k,c&&c.v!=null?String(c.f!=null?c.f:c.v).trim():'']}))))
+  }catch(e){rej(e)}};
+  sc.onerror=()=>{done();rej('script')};
+  sc.src=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:${cb}&headers=1&gid=${SHEET_GID}&_=${Date.now()}`;
+  document.head.appendChild(sc);
+})}
+const getCSV=u=>fetch(u).then(r=>{if(!r.ok)throw r.status;return r.text()}).then(parseCSV);
+async function loadSheet(){
+  const tries=[];
+  if(SHEET_ID){
+    tries.push(jsonp);
+    tries.push(()=>getCSV(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&headers=1&gid=${SHEET_GID}&_=${Date.now()}`));
+  }
+  if(SHEET_CSV_URL)tries.push(()=>getCSV(SHEET_CSV_URL+'&_='+Date.now()));
+  for(const t of tries){try{const a=await t();if(a&&a.some(w=>w.en&&w.ar))return a}catch(e){console.warn('sheet load failed',e)}}
+  throw new Error('all');
+}
+if(SHEET_ID||SHEET_CSV_URL){
+  $('#status').textContent='جاري تحديث الكلمات…';
+  loadSheet().then(a=>{setWords(a);render();$('#status').textContent=''})
+  .catch(()=>{$('#status').textContent='مش قادرين نوصل لأحدث نسخة من الكلمات دلوقتي، وده المحفوظ في الصفحة.'});
+}
+}
+</script>
+</body>
+</html>
